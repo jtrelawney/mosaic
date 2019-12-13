@@ -1,0 +1,12 @@
+to help clean up the build directories
+dir_list=$(find . -type d -name build)
+
+the git config excludes build anyway
+
+for network files:
+1. after code changes compile locally
+2. then send files to pi with script
+./send_files.sh 3_tcp_ip_basic_high_level_protocol/
+3. then compile on pi
+
+
