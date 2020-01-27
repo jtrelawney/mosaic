@@ -4,7 +4,7 @@
 #include <iostream>
 #include <cstring>
 #include <stdio.h>
-#include <message_class.h>
+#include <message_class.hpp>
 
 class test_message_class:public message_class{
 

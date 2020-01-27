@@ -1,12 +1,11 @@
-#include "message_class.h"
+#include "message_class.hpp"
 
-unsigned int message_class::m_message_counter = 0;
+std::atomic<unsigned int> message_class::m_message_counter(0);
 
-message_class::message_class():m_message_data_length(0) {
-    // this should be made renentrant
-    m_id = m_message_counter;
+// because message_counter is atomic, this should be re-entrant
+message_class::message_class():m_id(m_message_counter),m_message_data_length(0) {
     m_message_counter++;
-    std::cout <<"message class: constructor , id = " << m_id << " , data length = " << m_message_data_length << std::endl;
+    std::cout <<"message base class: constructor , id = " << m_id << " , data length = " << m_message_data_length << std::endl;
     print_buffer_content();
 }
 
@@ -24,7 +23,6 @@ unsigned int message_class::get_id(){
     return m_id;
 }
 
-// from the buffer create the meta data
 bool message_class::extract_header_buffer(){
     std::cout <<"message class : extract meta data from headerbuffer" << std::endl;
 
@@ -62,7 +60,6 @@ bool message_class::prepare_header_buffer(){
 
 // gets the pointer, used for tcp to fill the header buffer
 char* message_class::get_header_buffer_ptr(){
-    print_buffer_content();
     return m_header_buffer;
 }
 

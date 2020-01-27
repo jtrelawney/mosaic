@@ -9,33 +9,42 @@ int main(int argc, char *argv[])
 
     std::cout <<"creating test message 1" << std::endl;
     test_message_class test_message1("thisisatest");
-    std::string text = test_message1.get_data();
-    std::cout <<"message 1 text = " << text << std::endl;
+    std::cout << "\n\ntest message 1 , text = " << test_message1.get_data() << " id = " << test_message1.get_id() << " data length = " << test_message1.get_message_data_length() << std::endl;
 
 
-    // notice the ptr to message_class
+    // play tcp : copy the buffer from message1 to message2
+    // 1. prepare buffer and get the buffer ptr
+    // here use the base class, so that tcp can work without importing all message classes
     message_class *base_message;
     base_message = &test_message1;
-
     base_message->prepare_header_buffer();
     char *buffer1 = base_message->get_header_buffer_ptr();
 
+    test_message1.print_buffer_content();
+
+    // 2. create message2 and get the buffer ptr
+    std::cout <<"\n\ncreating test message 2" << std::endl;
     test_message_class test_message2;
-    char *buffer2 = test_message1.get_header_buffer_ptr();
+    char *buffer2 = test_message2.get_header_buffer_ptr();
 
+    // 3. copy the buffer
+    std::cout <<"\n\ncopy buffer from m1 to m2" << std::endl;
     for (int i=0; i<TCP_HEADER_LENGTH; i++){
-        std::cout << int(buffer1[i]) << " , ";
+        //std::cout << int(buffer1[i]) << " , ";
+        //std::cout << int(buffer2[i]) << " -> ";
         buffer2[i] = buffer1[i];
+        //std::cout << int(buffer2[i]) << std::endl;
     }
-    std::cout << std::endl;
 
-    test_message2.set_data(test_message1.get_data());
+    //test_message1.print_buffer_content();
+    //test_message2.print_buffer_content();
+
+    // 4. copy the data (text here)
+    std::cout <<"\n\nbuffer should be ready, but copy the text" << std::endl;
+    test_message2.extract_header_buffer();
     std::cout << "test message 2 , text = " << test_message2.get_data() << " id = " << test_message2.get_id() << std::endl;
-    
-
-
-
-    
+    test_message2.print_buffer_content();
+    std::cout << std::endl;
 
 /*    bool result = tcp.send_message(std::move(test_message));
     if (result == false) std::cout << "error sending message : " << std::endl;

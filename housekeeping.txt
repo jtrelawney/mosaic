@@ -1,3 +1,11 @@
+the code snippets in this folder help test a certain function, idea, mechanism etc.
+they may not be correct, in particular thread examples)
+they may not be efficient
+they may or may not be used later for the main project
+
+
+
+
 to help clean up the build directories
 dir_list=$(find . -type d -name build)
 
@@ -9,4 +17,5 @@ for network files:
 ./send_files.sh 3_tcp_ip_basic_high_level_protocol/
 3. then compile on pi
 
-
+to start a program on a particular processor:
+taskset --cpu-list 1 ./create_mat.exe
